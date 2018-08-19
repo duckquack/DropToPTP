@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [0.5.3]
 - Version check
 - Initial GitHub release
+- Bug fixes
 
 ## [0.5.2]
 - Key validation
