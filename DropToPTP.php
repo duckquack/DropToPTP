@@ -2,7 +2,7 @@
 
 // DropToPTP
 
-$version = "0.5.3.3";
+$version = file_get_contents(__DIR__."/current_version.txt");
 
 // Load includes
 
