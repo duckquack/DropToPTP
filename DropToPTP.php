@@ -123,12 +123,22 @@ if ($p['max_enable'] && $p['max_size']) {
 		$width = exec("sips -g pixelWidth ".escapeshellarg($file)." | tail -n1 | cut -f4 -d\" \"");
 		$height = exec("sips -g pixelHeight ".escapeshellarg($file)." | tail -n1 | cut -f4 -d\" \"");
 		
-		if ($width > $p['max_size'] | $height > $p['max_size']) {
+		if ($width > $p['max_size'] || $height > $p['max_size']) {
 			
 			updateStatus("Resizing ".$file);
-			$dest = $workdir.md5($file).".".pathinfo($file, PATHINFO_EXTENSION);
-			exec("sips --resampleHeightWidthMax ".$p['max_size']." ".escapeshellarg($file)." --out ".$dest." > /dev/null 2>&1");
-			$use[] = $dest;
+			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			$dest = $workdir.md5($file).".".$ext;
+			if ($ext == "png") {
+				exec("sips --resampleHeightWidthMax ".$p['max_size']." --matchTo '/System/Library/ColorSync/Profiles/sRGB Profile.icc' ".escapeshellarg($file)." --out ".$dest);
+				} else {
+				exec("sips --resampleHeightWidthMax ".$p['max_size']." ".escapeshellarg($file)." --out ".$dest);
+				}
+			if (file_exists($dest)) {
+				$use[] = $dest;
+				} else {
+				updateStatus("Resizing failed, using original file");
+				$use[] = $file;
+				}
 			
 			} else {
 			
