@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.5.4]
+- Fixed a bug that prevented resizing
+- Better prefs handling
+- Better update handling
+- Dark mode support
+
 ## [0.5.3]
 - Version check
 - Initial GitHub release

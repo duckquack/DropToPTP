@@ -16,7 +16,6 @@
 		<string>DropToPTPPrefs.php</string>
 		<string>functions.php</string>
 		<string>Pashua.app</string>
-		<string>keys</string>
 		<string>MainMenu.nib</string>
 		<string>prefs.php</string>
 	</array>
@@ -262,6 +261,6 @@
 	<key>UseXMLPlistFormat</key>
 	<false/>
 	<key>Version</key>
-	<string>0.5.2</string>
+	<string>0.5.4</string>
 </dict>
 </plist>

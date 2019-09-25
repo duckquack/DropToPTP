@@ -4,68 +4,6 @@
 
 $version = file_get_contents(__DIR__."/current_version.txt");
 
-// Load includes
-
-require (__DIR__."/functions.php");
-
-// Check for translocation
-
-if (!@touch(__DIR__."/test")) {
-	alert("DropToPTP cannot run from the Downloads folder");
-	quitme();
-	die;
-	}
-
-// Test connectivity to PTPImg
-
-if (!fsockopen("ssl://ptpimg.me", 443, $errno, $errstr, 30)) {
-	alert("Can't connect to PTPImg: ".$errstr,"Error ".$errno);
-	die;
-	}
-
-// Version check
-
-$checkfile = __DIR__."/vcheck";
-
-if (!file_exists($checkfile)) {
-	touch($checkfile, time()-90000);
-	}
-
-if (time()-filemtime($checkfile) > 86400) {
-	$curr_version = file_get_contents("https://raw.githubusercontent.com/duckquack/DropToPTP/master/current_version.txt");
-	if ($curr_version > $version) {
-		if(askMulti("A new version of DropToPTP is available", array("Skip","Download")) == 1) {
-			exec("open https://github.com/duckquack/DropToPTP");
-			quitme();
-			}
-		} else {
-		touch($checkfile);
-		}
-	}
-
-// Load preferences
-
-$prefs = __DIR__."/prefs.php";
-if (!file_exists($prefs)) {
-	alert("Can't read prefs file");
-	die;
-	} else {
-	$p = unserialize(file_get_contents(__DIR__."/prefs.php"));
-	}
-
-// If SHIFT key is held down, force opening preferences
-
-if(exec(__DIR__."/keys") == 512) {
-	$p['no_files_action'] = 0;
-	}
-	
-// Create work dir
-	
-$workdir = "/tmp/droptoptp/";
-if (!file_exists($workdir)) {
-	mkdir($workdir);
-	}
-
 // Check PHP version
 
 $required = "5.5";
@@ -74,26 +12,70 @@ if (version_compare(PHP_VERSION, $required) < 0) {
     die;
 	}
 
-updateProgress();
+// Load includes
 
-// No files action
+require (__DIR__."/functions.php");
 
-if (!@$argv[1]) {
-	if ($p['no_files_action'] == 0) {
-		showPrefs();
-		die;
-		} elseif ($p['no_files_action'] == 1) {
-		$img = "/tmp/droptoptp/screen_".time().".png";
-		exec("/usr/sbin/screencapture -i ".$img);
-		if (file_exists($img)) {
-			$argv[1] = $img;
-			} else {
-			alert("Error capturing screenshot");
-			die;
-			}
-		} elseif ($p['no_files_action'] == 2) {
+// Test connectivity to PTPImg
+
+if (!fsockopen("ssl://ptpimg.me", 443, $errno, $errstr, 30)) {
+	alert("Can't connect to PTPImg: ".$errstr,"Error ".$errno);
+	die;
+	}
+
+// Load preferences
+
+$prefs_file = "/Users/".get_current_user()."/Library/Preferences/org.anatidae.DropToPTP.php";
+if (!file_exists($prefs_file)) {
+	if (!copy(__DIR__."/prefs.php",$prefs_file)) {
+		echo "Error creating preferences file";
 		die;
 		}
+	}
+$p = unserialize(file_get_contents($prefs_file));
+
+// Create work dir
+	
+$workdir = "/tmp/droptoptp/";
+if (!file_exists($workdir)) {
+	mkdir($workdir);
+	}
+
+// No files dropped
+
+updateProgress();
+
+switch (@$argv[1]) {
+	case NULL:
+		if ($p['no_files_action'] == 0) {
+			die;
+			} elseif ($p['no_files_action'] == 1) {
+			$img = "/tmp/droptoptp/screen_".time().".png";
+			exec("/usr/sbin/screencapture -i ".$img);
+			if (file_exists($img)) {
+				$argv[1] = $img;
+				} else {
+				alert("Error capturing screenshot");
+				die;
+				}
+			}
+		break;
+	case "Preferences...":
+		showPrefs();
+		die;
+	case "Check for Updates...":
+		$curr_version = file_get_contents("https://raw.githubusercontent.com/duckquack/DropToPTP/master/current_version.txt");
+		if ($curr_version > $version) {
+			if(askMulti("A new version of DropToPTP is available", array("Skip","Download")) == 1) {
+				exec("open https://github.com/duckquack/DropToPTP");
+				quitme();
+				} else {
+				die;
+				}
+			} else {
+			alert($version." is the latest version","Up-to-date");
+			die;
+			}
 	}
 
 // Build list of valid dropped files
@@ -114,7 +96,7 @@ foreach ($argv as $target) {
 	}
 
 if (!@$files) {
-	alert("Support filetypes: ".implode(", ",$p['allowed']),"No supported files");
+	alert("Supported filetypes: ".implode(", ",$p['allowed']),"No supported files");
 	die;
 	} else {
 	sort($files);
@@ -129,7 +111,7 @@ if (count($files) > $p['limit']) {
 
 // Resize images
 
-if ($p['max_enable'] & $p['max_size']) {
+if ($p['max_enable'] && $p['max_size']) {
 
 	updateStatus("Resizing images...");
 	updateProgress();
