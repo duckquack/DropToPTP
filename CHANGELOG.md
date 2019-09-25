@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.5.4.1]
+- Additional checks
 - Bug fixes
 
 ## [0.5.4]
