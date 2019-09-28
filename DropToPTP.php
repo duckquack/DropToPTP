@@ -85,11 +85,11 @@ foreach ($argv as $target) {
 	if (is_dir($target)) {
 		$it = new RecursiveDirectoryIterator($target);
 		foreach(new RecursiveIteratorIterator($it) as $file) {
-    		if (in_array(strtolower(@array_pop(explode('.', $file))), $p['allowed'])) {
+    		if (in_array(strtolower(pathinfo($file,PATHINFO_EXTENSION)), $p['allowed'])) {
 				$files[] = $file->getpathname();
 				}
 			}	
-		} elseif (in_array(strtolower(@array_pop(explode('.', $target))), $p['allowed'])) {
+		} elseif (in_array(strtolower(pathinfo($target,PATHINFO_EXTENSION)), $p['allowed'])) {
 			$files[] = $target;	
 		}
 		
@@ -113,6 +113,12 @@ if (count($files) > $p['limit']) {
 
 if ($p['max_enable'] && $p['max_size']) {
 
+	if ($p['max_enable'] == 1) {
+		$resizeme = $p['allowed'];
+		} elseif ($p['max_enable'] == 2) {
+		$resizeme = array("jpg","jpeg");
+		}
+
 	updateStatus("Resizing images...");
 	updateProgress();
 
@@ -123,10 +129,10 @@ if ($p['max_enable'] && $p['max_size']) {
 		$width = exec("sips -g pixelWidth ".escapeshellarg($file)." | tail -n1 | cut -f4 -d\" \"");
 		$height = exec("sips -g pixelHeight ".escapeshellarg($file)." | tail -n1 | cut -f4 -d\" \"");
 		
-		if ($width > $p['max_size'] || $height > $p['max_size']) {
+		if (($width > $p['max_size'] || $height > $p['max_size']) && in_array(strtolower(pathinfo($file,PATHINFO_EXTENSION)), $resizeme)) {
 			
 			updateStatus("Resizing ".$file);
-			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 			$dest = $workdir.md5($file).".".$ext;
 			if ($ext == "png") {
 				exec("sips --resampleHeightWidthMax ".$p['max_size']." --matchTo '/System/Library/ColorSync/Profiles/sRGB Profile.icc' ".escapeshellarg($file)." --out ".$dest);
@@ -142,7 +148,7 @@ if ($p['max_enable'] && $p['max_size']) {
 			
 			} else {
 			
-			updateStatus($file." is not oversize");
+			updateStatus($file." does not need to be resized");
 			$use[] = $file;
 			}
 

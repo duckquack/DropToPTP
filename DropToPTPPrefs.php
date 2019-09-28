@@ -53,12 +53,15 @@ function makeWindowString($p, $strings) {
 	limit.default = ".$p['limit']."
 	limit.tooltip = DropToPTP will display a warning if more than x images are dropped
 	limit.width = 80
-	
-	# Image resizing
-	max_enable.rely = -18
-	max_enable.type = checkbox
-	max_enable.label = Resize images
-	max_enable.default = ".$p['max_enable']."
+
+	# Resize images?
+	max_enable.type = popup
+	max_enable.label = Resize images?
+	max_enable.width = 400
+	max_enable.option = ".$strings[3][0]."
+	max_enable.option = ".$strings[3][1]."
+	max_enable.option = ".$strings[3][2]."
+	max_enable.default = ".$strings[3][$p['max_enable']]."
 	max_size.type = textfield
 	max_size.label = Max image dimension
 	max_size.default = ".$p['max_size']."
@@ -125,6 +128,7 @@ $p = unserialize(file_get_contents($prefs_file));
 $strings[] = array("Never","Only if 2 or more files are uploaded","Always");
 $strings[] = array("Do nothing","Capture screenshot");
 $strings[] = array("Copy to clipboard","Open gallery","Do nothing");
+$strings[] = array("Do not resize images","Resize all images","Only resize JPEGs");
 
 // Launch Pashua and parse results
 
@@ -175,6 +179,7 @@ $result['allowed'] = explode(", ",$result['allowed']);
 $result['add_tags'] = array_search($result['add_tags'],$strings[0]);
 $result['no_files_action'] = array_search($result['no_files_action'],$strings[1]);
 $result['after_upload'] = array_search($result['after_upload'],$strings[2]);
+$result['max_enable'] = array_search($result['max_enable'],$strings[3]);
 
 // Write Prefs
 
