@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.5.5]
+- More granular image resizing
+
 ## [0.5.4.1]
 - Additional checks
 - Bug fixes
