@@ -143,7 +143,7 @@ foreach (explode("\n", $raw) as $line) {
     
 // User cancelled
 
-if (@$result['cb']) { die; }
+if (@$result['cb']) { echo 1; die; }
 
 // Fix strings
 
