@@ -65,6 +65,10 @@ switch (@$argv[1]) {
 		die;
 	case "Check for Updates...":
 		$curr_version = file_get_contents("https://raw.githubusercontent.com/duckquack/DropToPTP/master/current_version.txt");
+		if (!$curr_version) {
+			echo "\nALERT:Can't connect|Error checking for latest version\n";
+			die;
+			}
 		if ($curr_version > $version) {
 			if(askMulti("A new version of DropToPTP is available", array("Skip","Download")) == 1) {
 				exec("open https://github.com/duckquack/DropToPTP");
