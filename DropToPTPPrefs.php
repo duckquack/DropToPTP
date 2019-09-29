@@ -144,7 +144,7 @@ while (!$validated) {
 		$validated = 1;
 		} else {
 		$p['key'] = $result['key'];
-		$result = makeWindowString($p, $strings));
+		$result = makeWindowString($p, $strings);
 		if (@$result['cb']) {
 			echo "0";
 			die;
