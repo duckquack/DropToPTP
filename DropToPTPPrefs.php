@@ -2,7 +2,24 @@
 
 // DropToPTPPrefs
 
-require (__DIR__."/functions.php");
+function testKey($key) {
+	$data = array("api_key" => $key);
+	$url = "https://ptpimg.me/upload.php";
+	$options = array(
+        'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        	'method'  => 'POST',
+        	'content' => http_build_query($data),
+    		)
+    	);
+	$context  = stream_context_create($options);
+	$result = @file_get_contents($url, false, $context);
+	if (gettype($result) == "string") {
+		return true;
+		} else {
+		return false;
+		}
+	}
 
 function makeWindowString($p, $strings) {
 
@@ -133,25 +150,8 @@ if (@$result['cb']) {
 
 // Test API key
 
-$validated = 0;
-
-if (testKey($result['key'])) {
-	$validated = 1;
-	}
-
-while (!$validated) {
-	if (askMulti("PTPImg did not accept your API key",array("Continue", "Edit API key")) == 0) {
-		$validated = 1;
-		} else {
-		$p['key'] = $result['key'];
-		$result = makeWindowString($p, $strings);
-		if (@$result['cb']) {
-			echo "0";
-			die;
-			} elseif (testKey($result['key'])) {
-			$validated = 1;
-			}
-		}
+if (!testKey($result['key'])) {
+	echo "\nALERT:Warning|PTPimg did not accept your API key\n";
 	}
 
 // Fix strings
