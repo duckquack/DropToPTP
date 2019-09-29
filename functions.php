@@ -2,10 +2,6 @@
 
 // Functions
 
-function showPrefs() {
-	return exec("php ".__DIR__."/DropToPTPPrefs.php");
-	}
-
 function updateProgress($num = 0, $total = 100) {
 	$percent = floor(($num/$total)*100);
 	echo "\nPROGRESS:".$percent."\n";

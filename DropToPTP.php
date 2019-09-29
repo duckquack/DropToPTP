@@ -61,7 +61,9 @@ switch (@$argv[1]) {
 			}
 		break;
 	case "Preferences...":
-		showPrefs();
+		if (!exec("php ".__DIR__."/DropToPTPPrefs.php")) {
+			echo "\nALERT:Warning|PTPimg did not accept your API key\n";
+			}
 		die;
 	case "Check for Updates...":
 		$curr_version = file_get_contents("https://raw.githubusercontent.com/duckquack/DropToPTP/master/current_version.txt");

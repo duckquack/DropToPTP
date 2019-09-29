@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.5.5.1]
+- Fixed a API key bug
+
 ## [0.5.5]
 - More granular image resizing
 

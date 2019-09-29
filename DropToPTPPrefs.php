@@ -143,16 +143,7 @@ foreach (explode("\n", $raw) as $line) {
     
 // User cancelled
 
-if (@$result['cb']) {
-	echo "0";
-	die;
-	}
-
-// Test API key
-
-if (!testKey($result['key'])) {
-	echo "\nALERT:Warning|PTPimg did not accept your API key\n";
-	}
+if (@$result['cb']) { die; }
 
 // Fix strings
 
@@ -165,6 +156,13 @@ $result['max_enable'] = array_search($result['max_enable'],$strings[3]);
 // Write Prefs
 
 file_put_contents($prefs_file,serialize($result));
-echo "1";
+
+// Test API Key
+
+if (@$result['key'] && !testKey($result['key'])) {
+	echo 0;
+	} else {
+	echo 1;
+	}
 
 ?>
