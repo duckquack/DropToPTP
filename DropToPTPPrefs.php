@@ -15,9 +15,9 @@ function testKey($key) {
 	$context  = stream_context_create($options);
 	$result = @file_get_contents($url, false, $context);
 	if (gettype($result) == "string") {
-		return true;
+		return 1;
 		} else {
-		return false;
+		return 0;
 		}
 	}
 
@@ -159,8 +159,8 @@ file_put_contents($prefs_file,serialize($result));
 
 // Test API Key
 
-if (@$result['key'] && !testKey($result['key'])) {
-	echo 0;
+if (@$result['key'] && ($result['key'] != $p['key'])) {
+	echo testKey($result['key']);
 	} else {
 	echo 1;
 	}
