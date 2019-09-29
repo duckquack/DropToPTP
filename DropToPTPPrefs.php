@@ -2,26 +2,7 @@
 
 // DropToPTPPrefs
 
-// Functions
-
-function testKey($key) {
-	$data = array("api_key" => $key);
-	$url = "https://ptpimg.me/upload.php";
-	$options = array(
-        'http' => array(
-			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-        	'method'  => 'POST',
-        	'content' => http_build_query($data),
-    		)
-    	);
-	$context  = stream_context_create($options);
-	$result = @file_get_contents($url, false, $context);
-	if (gettype($result) == "string") {
-		return true;
-		} else {
-		return false;
-		}
-	}
+require (__DIR__."/functions.php");
 
 function makeWindowString($p, $strings) {
 
@@ -163,7 +144,7 @@ while (!$validated) {
 		$validated = 1;
 		} else {
 		$p['key'] = $result['key'];
-		$result = Pashua::showDialog(makeWindowString($p, $strings));
+		$result = makeWindowString($p, $strings));
 		if (@$result['cb']) {
 			echo "0";
 			die;
