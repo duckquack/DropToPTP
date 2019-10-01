@@ -130,7 +130,7 @@ $strings[] = array("Do not resize images","Resize all images","Only resize JPEGs
 
 // Launch Pashua and parse results
 
-$path = __DIR__."/Pashua.app/Contents/MacOS/Pashua";
+$path = __DIR__."/bin/Pashua.app/Contents/MacOS/Pashua";
 $raw = shell_exec("echo ".escapeshellarg(makeWindowString($p, $strings))." | ".escapeshellarg($path)." - ");
 $result = array();
 foreach (explode("\n", $raw) as $line) {

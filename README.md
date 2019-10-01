@@ -1,22 +1,18 @@
-<img align="left" src="icon.png" style="float: left; margin-right: 30px;" width="120">
+<img align='left' src='icon.iconset/icon_512x512.png' width='128'>
 
 # DropToPTP
 
 **DropToPTP** is a desktop image uploader for macOS.
 
-* **⇩ [Download Latest Version](https://github.com/duckquack/DropToPTP/raw/master/DropToPTP.app.zip)**
+#### [⇩ Download DropToPTP 0.5.5.2](https://www.github.com/duckquack/DropSpec/raw/master/DropToPTP.app.zip) ([Changelog](CHANGELOG.md))
 
 ## Screenshot
 
-<img src="screenshot_1.png" width="400">
+<img src="screenshot_1.png" width="555">
 
 ## Notes
 
-Running DropToPTP requires disabling Gatekeeper by running `sudo spctl --master-disable` in the Terminal.
-
-## Changelog
-
-https://github.com/duckquack/DropToPTP/blob/master/CHANGELOG.md
+Running DropToPTP may require disabling Gatekeeper by running `sudo spctl --master-disable` in the Terminal.
 
 ## Building from source
 
