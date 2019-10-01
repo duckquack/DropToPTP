@@ -4,7 +4,7 @@
 
 **DropToPTP** is a desktop image uploader for macOS.
 
-#### [⇩ Download DropToPTP 0.5.5.2](https://www.github.com/duckquack/DropSpec/raw/master/DropToPTP.app.zip) ([Changelog](CHANGELOG.md))
+#### [⇩ Download DropToPTP 0.5.5.2](https://www.github.com/duckquack/DropToPTP/raw/master/DropToPTP.app.zip) ([Changelog](CHANGELOG.md))
 
 ## Screenshot
 
