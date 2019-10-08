@@ -34,6 +34,10 @@ if (!file_exists($prefs_file)) {
 	}
 $p = unserialize(file_get_contents($prefs_file));
 
+$p['debug'] = 0;
+
+if ($p['debug']) { print_r($argv); }
+
 // Create work dir
 	
 $workdir = "/tmp/droptoptp/";
@@ -169,6 +173,8 @@ if ($p['max_enable'] && $p['max_size']) {
 	
 	}
 
+if ($p['debug']) { print_r($use); }
+
 // Upload images
 
 updateStatus("Uploading images...");
@@ -180,6 +186,8 @@ foreach ($use as $id => $file) {
 	}
 	
 $data_array["api_key"] = $p['key'];
+
+if ($p['debug']) { print_r($data_array); }
 
 $ci = curl_init();
 
